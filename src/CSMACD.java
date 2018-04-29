@@ -83,7 +83,7 @@ class NewThread implements Runnable, ChannelConstants {
 class CSMACD implements ChannelConstants {
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
-        NewThread.ChannelStatus = FREE;
+        NewThread.ChannelStatus = FREE; //initially channel is free
         System.out.println("Enter number of frames for Host One");
         int frame1 = sc.nextInt();
         System.out.println("Enter number of frames for Host Two");
