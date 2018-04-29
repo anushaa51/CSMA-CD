@@ -25,38 +25,44 @@ class NewThread implements Runnable, ChannelConstants {
             this.NumberOfAttempts++;
             if (this.NumberOfAttempts < 15) { //15 is maximum number of attempts
                 try {
-                    System.out.println(StationNumber + " is transmitting");
-                    if (ChannelStatus==FREE && distance==0) {
-                        for(;distance<50;distance++); //50 is taken as distance between any 2 stations
-                        ChannelStatus = INUSE;//set channel to in use
-                        System.out.println(StationNumber + " Successful");
-                        CheckIfSuccessfulTransmission = true;
-                        distance=0;
-                    }
-                    else {
-                        CheckIfSuccessfulTransmission = false;
-                        ChannelStatus = FREE;
-                        Random rand = new Random();
-                        System.out.println("Collision for " + StationNumber);
-                        try {
-                            int R = (int)(Math.pow(2,NumberOfAttempts-1));
-                            int BackOffTime = R*tfr;
-                            Thread.sleep(BackOffTime );
+                    if (ChannelStatus == INUSE) {
+                        System.out.println(this.StationNumber + " is using I-Peristent, channel is busy");
+                    } else {
+                        System.out.println(StationNumber + " is transmitting");
+                        if (ChannelStatus == FREE && distance == 0) {
+                            ChannelStatus = INUSE;//set channel to in use
+                            for(; distance < 50000; distance++) ; //50000 is taken as distance between any 2 stations
 
+                            System.out.println(StationNumber + " Successful");
+                            CheckIfSuccessfulTransmission = true;
+                            distance = 0;
+                            ChannelStatus = FREE;
+                        } else {
+                            CheckIfSuccessfulTransmission = false;
+                            ChannelStatus = FREE;
+                            Random rand = new Random();
+                            System.out.println("Collision for " + StationNumber);
+                            try {
+                                int R = (int) (Math.pow(2, NumberOfAttempts - 1));
+                                int BackOffTime = R * tfr;
+                                Thread.sleep(BackOffTime);
+
+                            } catch (InterruptedException e) {
+                                System.out.println("Interrupted");
+                            }
                         }
-                        catch (InterruptedException e) {
-                            System.out.println("Interrupted");
-                        }
+                        Thread.sleep(1000);
+
+
                     }
-                    Thread.sleep(1000);
-
-
-                } catch (InterruptedException e) {
-                    System.out.println(StationNumber + "Interrupted");
+                }catch(InterruptedException e){
+                        System.out.println(StationNumber + "Interrupted");
+                    }
                 }
-            } else {
-                System.out.println("Too many attempts for frame of" + StationNumber + " transmission stopped");
-            }
+                 else{ this.CheckIfSuccessfulTransmission = true;
+                    System.out.println("Too many attempts for frame of " + StationNumber + " transmission stopped");
+                }
+
         }
     }
 }
