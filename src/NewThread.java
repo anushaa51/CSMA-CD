@@ -44,8 +44,8 @@ class NewThread implements Runnable, ChannelConstants {
                             if (ChannelStatus == FREE && distance == 0) {//Successful transmission
                                 stat = CheckThreads.checking(Thread.currentThread().getName());
                                 frame = this.FrameNumber;
-                                //ChannelStatus = INUSE;//set channel to in use
-                                for (; distance < 5000000; distance++)
+                                ChannelStatus = INUSE;//set channel to in use
+                                for (; distance < 9000000; distance++)
                                     for(int i =0;i<1000;i++); //simulate transmission over some distance
 
 
