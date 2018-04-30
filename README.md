@@ -1,5 +1,5 @@
 # CSMA-CD
-Java implementation of CSMA/CD protocol using I-Persistent sensing.
+Java implementation of CSMA/CD protocol using Non-Persistent sensing.
 
 **CSMA :** <br>
 Carrier Sense Multiple Access/Collision Detection(CSMA) is a Media Access Control(MAC) Protocol used to minimize the probability of collision in the Data Link layer.
