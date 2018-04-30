@@ -6,13 +6,13 @@ public class CheckThreads implements ChannelConstants {
     {   int stat;
         switch (StationName)
         {
-            case("Host 1") : stat = 1;
+            case("Station 1") : stat = 1;
                                 break;
-            case ("Host 2") : stat = 2;
+            case ("Station 2") : stat = 2;
                                 break;
-            case("Host 3") : stat = 3;
+            case("Station 3") : stat = 3;
                                 break;
-            case ("Host 4") : stat = 4;
+            case ("Station 4") : stat = 4;
                                 break;
             default : stat = 0;
 

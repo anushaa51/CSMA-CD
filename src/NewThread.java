@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.*;
 class NewThread implements Runnable, ChannelConstants {
     String StationNumber;
     Thread t;
-    static int distance,stat=0,frame;
+    static int distance, stat=0,frame;
     static int ChannelStatus; //Indicates if channel is being used
     int FrameNumber,MaxFrameNumber;
     private AtomicBoolean CheckIfSuccessfulTransmission;
@@ -39,12 +39,12 @@ class NewThread implements Runnable, ChannelConstants {
                             }
                         }
                         else {
-                            System.out.println(StationNumber + " is transmitting frame number : " + FrameNumber);
+                            System.out.println(StationNumber + " is trying to transmit frame number : " + FrameNumber);
 
                             if (ChannelStatus == FREE && distance == 0) {//Successful transmission
                                 stat = CheckThreads.checking(Thread.currentThread().getName());
                                 frame = this.FrameNumber;
-                                ChannelStatus = INUSE;//set channel to in use
+                                //ChannelStatus = INUSE;//set channel to in use
                                 for (; distance < 5000000; distance++)
                                     for(int i =0;i<1000;i++); //simulate transmission over some distance
 
@@ -55,10 +55,11 @@ class NewThread implements Runnable, ChannelConstants {
                                 distance = 0; //reset distance for next frame's transmission
                                 ChannelStatus = FREE;
                             }
-                            else {//Collision
+                            else {//Collision has occurred
                                 System.out.println("Collision for frame " + FrameNumber + " of " +
                                         StationNumber + " and frame " + frame + " of Station " + stat);
-                                System.out.println("Retransmitting " + stat + "'s frame " + frame);
+
+                                System.out.println("Retransmitting Station " + stat + "'s frame " + frame);
                                 CheckIfSuccessfulTransmission.set(false);
                                 ChannelStatus = FREE;
 

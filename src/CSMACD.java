@@ -9,24 +9,24 @@ class CSMACD implements ChannelConstants {
         Scanner sc = new Scanner(System.in);
         NewThread.ChannelStatus = FREE; //initially channel is free
         System.out.println("Enter number of stations");
-        int n = sc.nextInt();
-        NewThread ArrayOfObjects[] = new NewThread[n+1];
-        int FrameArray[] = new int[n+1];
-        for(int i = 1;i<=n;i++)
+        int NumberOfStations = sc.nextInt();
+        NewThread ArrayOfObjects[] = new NewThread[NumberOfStations+1];
+        int FrameArray[] = new int[NumberOfStations+1];
+        for(int i = 1;i<=NumberOfStations;i++)
         {
-            System.out.println("Enter number of frames for Host " + i);
+            System.out.println("Enter number of frames for Station " + i);
             FrameArray[i] = sc.nextInt();
 
         }
 
-        for(int i = 1;i<=n;i++)
+        for(int i = 1;i<=NumberOfStations;i++)
 
-            ArrayOfObjects[i] = new NewThread("Host "+ Integer.toString(i),FrameArray[i]);
+            ArrayOfObjects[i] = new NewThread("Station "+ Integer.toString(i),FrameArray[i]);
 
 
         try {
 // wait for stations to complete transmission
-           for(int i=1;i<=n;i++)
+           for(int i=1;i<=NumberOfStations;i++)
                 ArrayOfObjects[i].t.join();
         }
         catch (InterruptedException e) {
