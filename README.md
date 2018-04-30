@@ -1,12 +1,14 @@
 # CSMA-CD
 Java implementation of CSMA/CD protocol using I-Persistent sensing.
 
-In the intial implementation, 4 stations have been taken into consideration, each 50000km apart.
+**CSMA :** <br>
+Carrier Sense Multiple Access/Collision Detection(CSMA) is a Media Access Control(MAC) Protocol used to minimize the probability of collision in the Data Link layer.
 
-Maximum number of attempts per frame, is taken as 15.
+**CSMA/CD :** <br>
+CSMA/Collision Detection is equipped to handle collisions. Frames that have not been successfully transferred are resent upto K times, where K is the maximum number of attempts.
+There are three types of sensing used in CSMA, this project uses I-Persistent method.
+Upon collision, the algorithm waits for a specific Backoff time before retransmission.<br>
+*Backoff time is calculated as, TBf = R * Transmission time* 
+<br>
+*Random number R = 0 to 2^K-1*
 
-Random number R = 0 to 2^k-1.
-
-Backoff time has been calculated as RxTransmission time.
-
-Number of frames to be sent per station is taken as an input.
