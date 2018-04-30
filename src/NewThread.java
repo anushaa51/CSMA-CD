@@ -1,3 +1,6 @@
+//Maximum number of attempts per frame = k = 15
+//Transmission time taken as 50
+//Input : Frames to send per station
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -35,7 +38,9 @@ class NewThread implements Runnable, ChannelConstants {
                             System.out.println(StationNumber + " is transmitting frame number : " + FrameNumber);
                             if (ChannelStatus == FREE && distance == 0) {
                                 ChannelStatus = INUSE;//set channel to in use
-                                for (; distance < 50000; distance++); //50000 is taken as distance between any 2 stations
+                                for (; distance < 500000; distance++)
+                                    for(int i =0;i<1000;i++); //simulate transmission over some distance
+
 
                                 System.out.println(StationNumber + " frame " + FrameNumber + " Successful");
                                 CheckIfSuccessfulTransmission.set(true);
@@ -47,6 +52,7 @@ class NewThread implements Runnable, ChannelConstants {
                                 CheckIfSuccessfulTransmission.set(false);
                                 ChannelStatus = FREE;
                                 Random rand = new Random();
+
                                 System.out.println("Collision for frame " + FrameNumber + " of " + StationNumber);
                                 try {
                                     int R = (int) (Math.pow(2, NumberOfAttempts - 1));

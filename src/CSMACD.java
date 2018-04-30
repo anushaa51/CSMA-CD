@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-interface ChannelConstants{ int FREE =0;  //Indicates Channel is free
+interface ChannelConstants{ int FREE = 0;  //Indicates Channel is free
     int INUSE = 1; //Indicates Channel is being used
  }
 
