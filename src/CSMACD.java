@@ -8,28 +8,28 @@ class CSMACD implements ChannelConstants {
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
         NewThread.ChannelStatus = FREE; //initially channel is free
-        System.out.println("Enter number of frames for Host One");
-        int frame1 = sc.nextInt();
-        System.out.println("Enter number of frames for Host Two");
-        int frame2 = sc.nextInt();
-        System.out.println("Enter number of frames for Host Three");
-        int frame3 = sc.nextInt();
-        System.out.println("Enter number of frames for Host Four");
-        int frame4 = sc.nextInt();
-        NewThread ob1 = new NewThread("Host One",frame1);
-        NewThread ob2 = new NewThread("Host Two",frame2);
-        NewThread ob3 = new NewThread("Host Three",frame3);
-        NewThread ob4 = new NewThread("Host four",frame4);
+        System.out.println("Enter number of stations");
+        int n = sc.nextInt();
+        NewThread ArrayOfObjects[] = new NewThread[n+1];
+        int FrameArray[] = new int[n+1];
+        for(int i = 1;i<=n;i++)
+        {
+            System.out.println("Enter number of frames for Host " + i);
+            FrameArray[i] = sc.nextInt();
+
+        }
+
+        for(int i = 1;i<=n;i++)
+
+            ArrayOfObjects[i] = new NewThread("Host "+ Integer.toString(i),FrameArray[i]);
 
 
         try {
 // wait for stations to complete transmission
-            ob1.t.join();
-            ob2.t.join();
-            ob3.t.join();
-            ob4.t.join();
-
-        } catch (InterruptedException e) {
+           for(int i=1;i<=n;i++)
+                ArrayOfObjects[i].t.join();
+        }
+        catch (InterruptedException e) {
             System.out.println("Main Thread Interrupted");
         }
         System.out.println("Transmission completed.");

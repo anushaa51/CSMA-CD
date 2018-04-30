@@ -1,13 +1,10 @@
-//Maximum number of attempts per frame = k = 15
-//Transmission time taken as 50
-//Input : Frames to send per station
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.*;
 
 class NewThread implements Runnable, ChannelConstants {
     String StationNumber;
     Thread t;
-    static int distance;
+    static int distance,stat=0,frame;
     static int ChannelStatus; //Indicates if channel is being used
     int FrameNumber,MaxFrameNumber;
     private AtomicBoolean CheckIfSuccessfulTransmission;
@@ -25,37 +22,51 @@ class NewThread implements Runnable, ChannelConstants {
 
 
     public void run() {
-
+        Random rand = new Random();
         while (!CheckIfSuccessfulTransmission.get()) {
             NumberOfAttempts++;
             while(FrameNumber <= MaxFrameNumber) {
                 if (NumberOfAttempts < 15) { //15 is the maximum number of attempts
                     try {
                         if (ChannelStatus == INUSE) {
-                            System.out.println(StationNumber + " is using I-Persistent sensing, channel is busy");
+
+                            System.out.println(StationNumber + " is using Non-Persistent sensing, channel is busy");
+                            try {
+                                Thread.sleep(rand.nextInt(50)+1000);
+                            }
+                            catch (InterruptedException e) {
+                                System.out.println(("Interrupt"));
+                            }
                         }
                         else {
                             System.out.println(StationNumber + " is transmitting frame number : " + FrameNumber);
-                            if (ChannelStatus == FREE && distance == 0) {
+
+                            if (ChannelStatus == FREE && distance == 0) {//Successful transmission
+                                stat = CheckThreads.checking(Thread.currentThread().getName());
+                                frame = this.FrameNumber;
                                 ChannelStatus = INUSE;//set channel to in use
-                                for (; distance < 500000; distance++)
+                                for (; distance < 5000000; distance++)
                                     for(int i =0;i<1000;i++); //simulate transmission over some distance
 
 
-                                System.out.println(StationNumber + " frame " + FrameNumber + " Successful");
+                                System.out.println(StationNumber + " frame " + FrameNumber + " is successful");
                                 CheckIfSuccessfulTransmission.set(true);
                                 FrameNumber++;
                                 distance = 0; //reset distance for next frame's transmission
                                 ChannelStatus = FREE;
                             }
-                            else {
+                            else {//Collision
+                                System.out.println("Collision for frame " + FrameNumber + " of " +
+                                        StationNumber + " and frame " + frame + " of Station " + stat);
+                                System.out.println("Retransmitting " + stat + "'s frame " + frame);
                                 CheckIfSuccessfulTransmission.set(false);
                                 ChannelStatus = FREE;
-                                Random rand = new Random();
 
-                                System.out.println("Collision for frame " + FrameNumber + " of " + StationNumber);
+                                NumberOfAttempts++;
+
+
                                 try {
-                                    int R = (int) (Math.pow(2, NumberOfAttempts - 1));
+                                    int R = rand.nextInt((int) (Math.pow(2, NumberOfAttempts - 1)));
                                     int BackOffTime = R * tfr;
                                     Thread.sleep(BackOffTime);
 
